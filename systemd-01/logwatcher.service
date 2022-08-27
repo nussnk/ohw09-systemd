@@ -1,0 +1,10 @@
+[Unit]
+Description=My logwatcher service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/logwatcher/env
+ExecStart=/opt/logwatcher.sh $WORD $LOG
+
+[Install]
+WantedBy=multi-user.target

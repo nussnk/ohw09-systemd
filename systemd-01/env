@@ -1,0 +1,6 @@
+#Configuration file for the logwatcher service
+
+WORD="ALERT"
+LOG=/var/log/logwatcher.log
+
+

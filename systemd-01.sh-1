@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# creating a timer
+echo << EOF > /etc/systemd/system/logwatcher.timer
+[Unit]
+Description=Run a logwatch service every 30 seconds
+
+[Timer]
+# Run every 30 secs
+OnUnitActiveSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# creating a service
+echo << EOF > /etc/systemd/system/logwatcher.service
+[Unit]
+Description=My logwatcher service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/logwatcher/env
+ExecStart=/opt/logwatcher.sh $WORD $LOG
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# creating a script
+echo << EOF > /opt/logwatcher.sh
+#!/bin/bash
+
+word=$1
+logfile=$2
+curdate=`date`
+
+logger "logwatcher is up and running"
+logger "looking for a word $1 in $2 file"
+
+if grep $word $logfile &> /dev/null
+then
+	logger "$curdate: I found the word!"
+else
+	exit 0
+fi
+
+EOF
+# make it executable
+chmod +x /opt/logwatcher.sh
+# creating a folder for an EnvironmentFile
+mkdir /etc/logwatcher
+# creating the EnvironmentFile
+echo << EOF > /etc/logwatcher/env
+#Configuration file for the logwatcher service
+
+WORD="ALERT"
+LOG=/var/log/logwatcher.log
+
+
+echo << EOF > /var/log/logwatcher.log
+esfse
+fdsh n
+tfsjh 
+tfsh
+n ALERT
+dsfhxfdhxc
+ hxcg
+ hxfc
+ hxf
+s htd
+EOF
+# starting the timer
+systemctl start logwatcher.timer
